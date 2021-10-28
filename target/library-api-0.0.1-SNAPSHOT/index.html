@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Library Asset Editor</title>
+
+        <!-- Link to Bootstrap stylesheet -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <!-- Custom stylesheet -->
+        <link rel="stylesheet" href="styles/styles.css">
+        
+        <!-- js scripts are linked after the body tag -->
+    </head>
+
+    <body>
+        <div class="container">
+
+            <!-- Page Header/Title Section -->
+            <div class="row text-center">
+                <div class="col">
+                    <h1>
+                        <!-- Icon of a book -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/></svg>
+                        Library Asset Editor
+                    </h1>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- 
+                Dropdown menu with options to manage library assets
+                -Add
+                -Update
+                -Delete
+                -Refresh
+
+                Add/Update/Delete items bring up the manage-asset-modal which shows a form.
+                Each option has an event listener to change the state of the form. 
+              -->
+            <div class="row">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Manage Assets
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#manage-asset-modal" id="new-asset-anchor">Add New Asset</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#manage-asset-modal" id="update-asset-anchor">Update Asset</a></li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#manage-asset-modal" id="delete-asset-anchor">Delete Asset</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" id="refresh-table-anchor">Refresh Table</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <br />
+        
+            <!-- Checkbox group used to toggle the table columns -->
+            <div class="row">
+                <div class="col text-center">
+                    <span class="align-middle">
+                        Show Columns:&nbsp;
+                        <div class="btn-group" role="group" aria-label="Asset table column toggle buttons">
+                            <input type="checkbox" class="btn-check" id="asset-id-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="asset-id-check">ID</label>
+                        
+                            <input type="checkbox" class="btn-check" id="title-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="title-check">Title</label>
+                        
+                            <input type="checkbox" class="btn-check" id="author-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="author-check">Author</label>
+
+                            <input type="checkbox" class="btn-check" id="media-type-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="media-type-check">Media Type</label>
+
+                            <input type="checkbox" class="btn-check" id="language-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="language-check">Language</label>
+
+                            <input type="checkbox" class="btn-check" id="collection-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="collection-check">Collection</label>
+
+                            <input type="checkbox" class="btn-check" id="location-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="location-check">Location</label>
+
+                            <input type="checkbox" class="btn-check" id="loan-type-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="loan-type-check">Loan Type</label>
+
+                            <input type="checkbox" class="btn-check" id="inter-lib-loan-check" autocomplete="off" checked />
+                            <label class="btn btn-outline-secondary" for="inter-lib-loan-check">Inter-Library Loan</label>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <br />
+
+            <!-- Table to display assets -->
+            <div class="row">
+                <table class="table table-hover">
+                    <colgroup>
+                        <col>
+                        <col class="col-collapse" id="asset-id-col">
+                        <col class="col-collapse" id="title-col">
+                        <col class="col-collapse" id="author-col">
+                        <col class="col-collapse" id="media-type-col">
+                        <col class="col-collapse" id="language-col">
+                        <col class="col-collapse" id="collection-col">
+                        <col class="col-collapse" id="location-col">
+                        <col class="col-collapse" id="loan-type-col">
+                        <col class="col-collapse" id="inter-lib-loan-col">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Asset ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Media Type</th>
+                            <th>Language</th>
+                            <th>Collection</th>
+                            <th>Location</th>
+                            <th>Loan Type</th>
+                            <th>Inter-Library Loan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="asset-list-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <!-- Manage Asset Modal -->
+        <div class="modal fade" id="manage-asset-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-scrollable">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Manage Asset</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearAssetForm()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="manage-asset-form" action="#">
+                            <input id="form-state" type="hidden" value="default" />
+                        <div class="form-group">
+                            <label for="asset-id-input" class="form-label top-space">Asset Id</label>
+                            <input id="asset-id-input" class="form-control" type="number" required disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label for="title-input" class="form-label top-space">Title</label>
+                            <input id="title-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="author-input" class="form-label top-space">Author</label>
+                            <input id="author-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="media-type-input" class="form-label top-space">Media Type</label>
+                            <input id="media-type-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="language-input" class="form-label top-space">Language</label>
+                            <input id="language-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="collection-input" class="form-label top-space">Collection</label>
+                            <input id="collection-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="location-input" class="form-label top-space">Location</label>
+                            <input id="location-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-group">
+                            <label for="loan-type-input" class="form-label top-space">Loan Type</label>
+                            <input id="loan-type-input" class="form-control" type="text" required disabled />
+                        </div>
+                        <div class="form-check top-space">
+                            <input id="inter-lib-loan-input" class="form-check-input" type="checkbox" value="" disabled />
+                            <label for="inter-lib-loan-input" class="form-label">Loanable to Other Libraries</label>
+                        </div>
+
+                        <div class="top-space">
+                            <input type="submit" class="btn btn-primary" id="asset-submit-button" value="Submit" disabled />
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="clearAssetForm()">Close</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <script src="scripts/asset-list-ops.js"></script>
+    <script src="scripts/toggle-col-events.js"></script>
+
+</html>
